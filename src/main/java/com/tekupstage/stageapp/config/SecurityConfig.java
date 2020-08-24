@@ -50,26 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected  void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth.authenticationProvider(daoAuthenticationProvider());
     }
-    protected UserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-                .username("user")
-                .password(passwordEncoder().encode("password"))
-                .authorities(TEACHER.getGrantedAuthorities())
-                .build();
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("password"))
-                .roles(ADMIN.name())
-                .authorities(ADMIN.getGrantedAuthorities())
-                .build();
-
-        UserDetails user2 = User.builder()
-                .username("user2")
-                .password(passwordEncoder().encode("password"))
-                .roles(STUDENT.name())
-                .build();
-        return new InMemoryUserDetailsManager(user,admin,user2);
-    }
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(){
         DaoAuthenticationProvider provider= new DaoAuthenticationProvider();
