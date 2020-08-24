@@ -5,12 +5,15 @@ import com.tekupstage.stageapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -33,4 +36,8 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+        return userRepository.findByUsername(name);
+    }
 }

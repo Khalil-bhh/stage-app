@@ -1,6 +1,12 @@
 package com.tekupstage.stageapp.config;
 
+import com.tekupstage.stageapp.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -19,7 +25,8 @@ import static com.tekupstage.stageapp.enums.UserRole.*;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-
+    @Autowired
+    private  UserService userService;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -32,15 +39,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
 //               .antMatchers("/user").hasAuthority(USER_READ.getPermission())
-                .antMatchers("/**").permitAll()
+//                .antMatchers("/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin();
+                .httpBasic();
     }
 
     @Override
-    @Bean
+    protected  void configure(AuthenticationManagerBuilder auth) throws Exception{
+        auth.authenticationProvider(daoAuthenticationProvider());
+    }
     protected UserDetailsService userDetailsService() {
         UserDetails user = User.builder()
                 .username("user")
@@ -61,6 +70,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .build();
         return new InMemoryUserDetailsManager(user,admin,user2);
     }
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider(){
+        DaoAuthenticationProvider provider= new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder());
+        provider.setUserDetailsService(userService);
+        return provider;
+    }
+
 
     @Bean
     public PasswordEncoder passwordEncoder(){

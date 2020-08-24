@@ -1,4 +1,4 @@
-package com.tekupstage.stageapp.dto.base;
+package com.tekupstage.stageapp.dto.responses.base;
 
 
 import java.util.ArrayList;

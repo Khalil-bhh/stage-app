@@ -11,6 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 @Entity
+@Embeddable
 @Table(name = "addresses")
 public class Address {
 

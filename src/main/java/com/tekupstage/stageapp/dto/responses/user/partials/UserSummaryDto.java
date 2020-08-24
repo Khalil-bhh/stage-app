@@ -1,4 +1,4 @@
-package com.tekupstage.stageapp.dto.user.partials;
+package com.tekupstage.stageapp.dto.responses.user.partials;
 
 import com.tekupstage.stageapp.enums.UserRole;
 import com.tekupstage.stageapp.models.User;

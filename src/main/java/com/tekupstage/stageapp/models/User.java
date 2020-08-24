@@ -28,6 +28,7 @@ public class User extends AuditModel implements UserDetails {
     protected Long id;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Embedded
     private List<Address> addresses;
 
     @Column(nullable = false, length = 100, unique = true)

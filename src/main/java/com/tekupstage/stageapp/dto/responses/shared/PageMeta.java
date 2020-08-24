@@ -1,4 +1,4 @@
-package com.tekupstage.stageapp.dto.shared;
+package com.tekupstage.stageapp.dto.responses.shared;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

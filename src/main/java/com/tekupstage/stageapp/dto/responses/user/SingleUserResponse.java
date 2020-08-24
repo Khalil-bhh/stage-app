@@ -1,6 +1,6 @@
-package com.tekupstage.stageapp.dto.user;
+package com.tekupstage.stageapp.dto.responses.user;
 
-import com.tekupstage.stageapp.dto.base.SuccessResponse;
+import com.tekupstage.stageapp.dto.responses.base.SuccessResponse;
 import com.tekupstage.stageapp.enums.UserRole;
 import com.tekupstage.stageapp.models.User;
 import lombok.AllArgsConstructor;

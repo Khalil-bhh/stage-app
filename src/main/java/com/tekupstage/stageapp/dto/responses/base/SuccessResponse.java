@@ -1,4 +1,4 @@
-package com.tekupstage.stageapp.dto.base;
+package com.tekupstage.stageapp.dto.responses.base;
 
 public class SuccessResponse extends AppResponse {
     public SuccessResponse() {
@@ -8,10 +8,6 @@ public class SuccessResponse extends AppResponse {
     public SuccessResponse(String message) {
         this();
         addFullMessage(message);
-    }
-
-    public static SuccessResponse build(String message) {
-        return new SuccessResponse(message);
     }
 
 }

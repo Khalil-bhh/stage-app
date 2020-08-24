@@ -1,8 +1,8 @@
-package com.tekupstage.stageapp.dto.user;
+package com.tekupstage.stageapp.dto.responses.user;
 
-import com.tekupstage.stageapp.dto.shared.PageMeta;
-import com.tekupstage.stageapp.dto.shared.PageMetaResponse;
-import com.tekupstage.stageapp.dto.user.partials.UserSummaryDto;
+import com.tekupstage.stageapp.dto.responses.shared.PageMeta;
+import com.tekupstage.stageapp.dto.responses.shared.PageMetaResponse;
+import com.tekupstage.stageapp.dto.responses.user.partials.UserSummaryDto;
 import com.tekupstage.stageapp.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
