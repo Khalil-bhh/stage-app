@@ -1,10 +1,12 @@
 package com.tekupstage.stageapp.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tekupstage.stageapp.config.JwtConfig;
 import com.tekupstage.stageapp.dto.requests.LoginRequest;
 import com.tekupstage.stageapp.models.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +29,7 @@ public class JwtUserNameAndPasswordAuthenticationFilter extends UsernamePassword
     private final AuthenticationManager authenticationManager;
 
 
+
     public JwtUserNameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
@@ -37,8 +41,7 @@ public class JwtUserNameAndPasswordAuthenticationFilter extends UsernamePassword
             LoginRequest loginRequest = new ObjectMapper().readValue(request.getInputStream(), LoginRequest.class);
             Authentication authentication = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
                     loginRequest.getPassword());
-            Authentication authenticate = authenticationManager.authenticate(authentication);
-            return authenticate;
+            return authenticationManager.authenticate(authentication);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -53,7 +56,6 @@ public class JwtUserNameAndPasswordAuthenticationFilter extends UsernamePassword
         String secret = "TEKUP_STAGE_APP_SECRET_TEKUP_STAGE_APP_SECRET";
         String token = Jwts.builder()
                 .setSubject(authResult.getName())
-                .claim("username",authResult.getName())
                 .claim("authorities",authResult.getAuthorities())
                 .claim("id", ((User)authResult.getPrincipal()).getId())
                 .setIssuedAt(new Date())

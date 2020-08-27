@@ -1,6 +1,7 @@
 package com.tekupstage.stageapp.config;
 
 import com.tekupstage.stageapp.filter.JwtUserNameAndPasswordAuthenticationFilter;
+import com.tekupstage.stageapp.filter.JwtVerifierFilter;
 import com.tekupstage.stageapp.models.User;
 import com.tekupstage.stageapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(new JwtUserNameAndPasswordAuthenticationFilter(authenticationManager()))
+                .addFilterAfter(new JwtVerifierFilter(),JwtUserNameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .anyRequest()
@@ -63,9 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Component("userSecurity")
     public class UserSecurity {
-        public boolean hasUserId(Authentication authentication, Long userId) {
-            System.out.println(((User)authentication.getPrincipal()).getId());
-            return ((User) authentication.getPrincipal()).getId().equals(userId);
+        public boolean hasUserId(Authentication authentication, String username) {
+            return  authentication.getName().equals(username);
         }
     }
 }

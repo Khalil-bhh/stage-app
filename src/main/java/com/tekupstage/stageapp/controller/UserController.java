@@ -22,6 +22,7 @@ public class UserController {
     @Autowired
     private  UserService userService;
 
+
     @GetMapping
     public UserListResponse getUsers(@RequestParam(value = "page",defaultValue = "1") int page,
                                      @RequestParam(value = "page_size",defaultValue = "8") int pageSize,
@@ -31,13 +32,13 @@ public class UserController {
     }
 
     @PreAuthorize(value = "hasAuthority('ROLE_ADMIN')"
-            + "or @userSecurity.hasUserId(authentication,#id)")
-    @GetMapping("/{id}")
-    public ResponseEntity<AppResponse> getUserById(@PathVariable long id){
-        User user = userService.findById(id);
+            + "or @userSecurity.hasUserId(authentication,#username)")
+    @GetMapping("/{username}")
+    public ResponseEntity<AppResponse> getUserById(@PathVariable String username){
+        User user = userService.loadUserByUsername(username);
         ErrorResponse errors = new ErrorResponse();
         if (user == null) {
-            errors.getFullMessages().add("user with id " + id + " not found");
+            errors.getFullMessages().add("user with id " + username + " not found");
             return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
         } else
             return new ResponseEntity<>(SingleUserResponse.build(user),HttpStatus.OK);
